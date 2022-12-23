@@ -29,6 +29,22 @@ class BrandController extends Controller
             'image' => 'image|mimes:jpg,jpeg,png,gif|max:100000',
         ]);
 
+        $last_row_brand = DB::table('brands')->get()->last();
+        $last_code = $last_row_brand->code;
+        $pluscode = substr($last_code,1)+1;
+        $count = strlen($pluscode);
+        $code = "";
+
+        if ($count == 1) {
+            $code = "K000".$pluscode;
+        } elseif ($count == 2) {
+            $code = "K00".$pluscode;
+        } elseif ($count == 3) {
+            $code = "K0".$pluscode;
+        } else {
+            $code = "K0000";
+        }
+
         $input = $request->except('image');
         $input['is_active'] = true;
         $image = $request->image;
@@ -95,7 +111,6 @@ class BrandController extends Controller
             array_push($escapedHeader, $escapedItem);
         }
 
-        dd($escapedHeader);
         //looping through othe columns
         while($columns=fgetcsv($file))
         {

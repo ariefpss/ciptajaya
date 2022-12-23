@@ -245,7 +245,9 @@ class ProductController extends Controller
         $cdBrand = Brand::select('code')->where('id','=', $data['brand_id'])->first()->code;
         $cdCategory = Category::select('code')->where('id','=',$data['category_id'])->first()->code;
 
-        $codeProduct = $this->generateCode($cdBrand, $cdCategory);
+        $product = Product::firstOrNew([ 'name'=>$data['name'], 'is_active'=>true ]);
+
+        $codeProduct = $this->generateCode($product->name,$cdBrand, $cdCategory);
 
         $data['code'] = $codeProduct;
 
